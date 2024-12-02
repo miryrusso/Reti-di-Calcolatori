@@ -1,0 +1,92 @@
+Configurazione Macchine Virtuali
+Primo client comando (m1)
+andare nel client e eseguire il seguente comando nano /etc/network/interfaces
+Sottto the primary networkiface 
+                enp0s3 inet static
+                address 10.0.1.2/24
+                gateway 10.0.1.254
+
+
+Secondo client (m2)
+andare nel client e eseguire il seguente comando nano /etc/network/interfaces
+Sottto the primary networkiface 
+                enp0s3 inet static
+                address 192.168.1.2/24
+                gateway 192.168.1.254
+
+
+Primo server (A)
+andare nel client e eseguire il seguente comando nano /etc/network/interfaces
+Sottto the primary networkiface 
+                enp0s3 inet static
+                address 10.0.1.1/24
+                gateway 10.0.1.254
+
+Secondo server (B)
+andare nel client e eseguire il seguente comando nano /etc/network/interfaces
+Sottto the primary networkiface 
+                enp0s3 inet static
+                address 192.168.1.1/24
+                gateway 192.168.1.254
+
+Router (inserire entrambi gli indirizzi IP)
+nano /etc/systctl.conf
+Decommentare una riga net.ipv4.ip_forward = 1
+
+Sottto the primary networkiface 
+                enp0s3 inet static
+                address 10.0.1.254/24
+
+Sottto the primary networkiface 
+                enp0s3 inet static
+                address 192.168.1.254/24
+
+Vedere se pingano gli IP oppure nano /etc/hosts e aggiungere per ogni indirizzo IP il proprio alias
+Quindi, per esempio: 
+        10.0.1.254          routerA
+
+
+Traceroute -> indirizzoIP per vedere il percorso che fa per comunicare
+
+RICORDA CHE LE MACCHINE DEVONO ESSERE RETI INTERNE 
+Ora creiamo un altro router. il routerB e creiamo le due schede di rete
+
+
+Terzo client (C)
+Andare nel client e eseguire il seguente comando nano /etc/network/interfaces
+Sotto the primary networkiface 
+                enp0s3 inet static
+                address 11.0.1.2/24
+                gateway scelgo uno dei due router, nel nostro caso il router A 11.0.1.254
+
+
+Quarto client (D)
+andare nel client e eseguire il seguente comando nano /etc/network/interfaces
+Sottto the primary networkiface 
+                enp0s3 inet static
+                address 192.168.1.1/24
+                gateway 192.168.1.254
+
+NON POSSO AVERE LE INTERFACCE CON LO STESSO NOME DEL ROUTER 
+
+Se avessimo due router, e devo comunicare con il router b al primo server devo mettere nel router b la seguente regola cosi comunica con router A
+
+up ip route add 10.0.1.0/24 via 11.0.1.254
+
+Se non configuriamo anche il router A non arriva la risposya
+
+DOPO AVER ROUTINGATO 
+CONSEGNA: client manda messaggio al server dicendo voglio mandare il messaggio x all'ip ip.
+
+Come apriamo VsCode? 
+Mettiamo nelle macchine Hostonly creando un'altra scheda di rete NON MODIFICARE QUELLA CHE FUNZIONA CON PING
+
+AGGIUNGERE IN interfaces
+auto enp0s8
+iface enp0s8 inet dhcp 
+
+Salvi e ti connetti
+
+Scrivi il codice socket tra l'utente e il server 
+
+Ora eseguiamo l'esercizio

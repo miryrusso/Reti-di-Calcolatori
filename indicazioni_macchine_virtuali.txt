@@ -1,0 +1,93 @@
+Configurazione delle Macchine Virtuali
+
+Primo client (m1)
+
+Accedere al client e aprire il file di configurazione delle interfacce di rete utilizzando il comando:
+nano /etc/network/interfaces
+
+Modificare il file in modo da apparire come segue:
+auto enp0s3
+iface enp0s3 inet static
+    address 10.0.1.2
+    netmask 255.255.255.0
+    gateway 10.0.1.254
+Salvare le modifiche e uscire dall'editor.
+
+Secondo client (m2)
+
+Accedere al secondo client e aprire il file di configurazione delle interfacce di rete utilizzando il comando:
+nano /etc/network/interfaces
+Modificare il file in modo da apparire come segue:
+auto enp0s3
+iface enp0s3 inet static
+    address 192.168.1.2
+    netmask 255.255.255.0
+    gateway 192.168.1.254
+
+Salvare le modifiche e uscire dall'editor.
+
+Primo server (A)
+
+Accedere al primo server e aprire il file di configurazione delle interfacce di rete utilizzando il comando:
+nano /etc/network/interfaces
+Modificare il file in modo da apparire come segue:
+auto enp0s3
+iface enp0s3 inet static
+    address 10.0.1.1
+    netmask 255.255.255.0
+    gateway 10.0.1.254
+
+Secondo server (B)
+auto enp0s3
+iface enp0s3 inet static
+    address 192.168.1.1
+    netmask 255.255.255.0
+    gateway 192.168.1.254
+
+Configurazione del Router
+
+Aprire il file di configurazione del kernel:
+nano /etc/sysctl.conf
+
+Decomentare la linea seguente per abilitare l'inoltro dell'IP:
+net.ipv4.ip_forward = 1
+Salvare le modifiche e uscire dall'editor.
+
+Configurare l'interfaccia del router per la rete 10.0.1.0/24:
+auto enp0s3
+iface enp0s3 inet static
+    address 10.0.1.254
+    netmask 255.255.255.0
+
+Configurare l'interfaccia del router per la rete 192.168.1.0/24:
+auto enp0s3
+iface enp0s3 inet static
+    address 192.168.1.254
+    netmask 255.255.255.0
+
+Salvare le modifiche e uscire dall'editor.
+
+Aggiungere alias agli indirizzi IP nel file /etc/hosts:
+nano /etc/hosts
+
+Aggiungere le seguenti linee (sostituire con gli alias appropriati):
+10.0.1.254    routerA
+192.168.1.254  routerB
+
+Salvare le modifiche e uscire dall'editor.
+
+Verifica delle connessioni
+
+Per verificare se le connessioni funzionano, è possibile utilizzare il comando ping o traceroute con gli indirizzi IP specificati nei passaggi precedenti.
+
+Per aprire Visual Studio Code, è necessario aggiungere una seconda scheda di rete di tipo "Host-Only" nelle macchine virtuali. Successivamente, è possibile configurare l'interfaccia di rete aggiuntiva nel file /etc/network/interfaces come segue:
+auto enp0s8
+iface enp0s8 inet dhcp
+
+Salvare le modifiche e connettersi alla rete. Una volta che tutte le configurazioni sono state fatte correttamente, è possibile scrivere il codice per la comunicazione tra l'utente e il server utilizzando socket.
+
+Assicurarsi di aver configurato il routing correttamente, come descritto nei passaggi sopra, per consentire la comunicazione tra le reti interne e tra i router.
+
+Una volta completata la configurazione, è possibile eseguire l'esercizio di comunicazione tra client e server come descritto all'interno dei codici '.c' 
+
+
